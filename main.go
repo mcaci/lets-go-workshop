@@ -11,6 +11,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer f.Close()
 	fmt.Fprintln(f, "Hello World!")
-	f.Close()
 }
