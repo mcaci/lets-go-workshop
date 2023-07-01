@@ -7,17 +7,18 @@ This workshop aims to give an introduction of the Go language by writing code an
 ## Tools needed for the workshop
 
 - Go
-    - Download at go.dev
+  - Download at go.dev
+  - Verify that it's working by running `go version` in the command line
 - The IDE of your choice
-    - Visual Studio Code with the Go extension
-    - Goland (from JetBrains)
-    - Vim plugin https://github.com/fatih/vim-go
+  - Visual Studio Code with the Go extension
+  - Goland (from JetBrains)
+  - Vim plugin <https://github.com/fatih/vim-go>
 - Git
-    - To commit the different milestones
+  - To commit the different milestones
 - pkg.go.dev
-    - This is the link to the documentation of the various Go packages available
-        - Inside or outside the standard library
-    - Useful to learn about each symbol (types, functions, methods, and so on) and what they do for each package. It usually contains examples of usages of these symbols as well.
+  - This is the link to the documentation of the various Go packages available
+    - Inside or outside the standard library
+  - Useful to learn about each symbol (types, functions, methods, and so on) and what they do for each package. It usually contains examples of usages of these symbols as well
 
 ## Milestones
 
