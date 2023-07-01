@@ -2,11 +2,15 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 )
 
 func main() {
-	f, _ := os.Create("./out/text")
+	f, err := os.Create("./out/text")
+	if err != nil {
+		log.Fatal(err)
+	}
 	fmt.Fprintln(f, "Hello World!")
 	f.Close()
 }
