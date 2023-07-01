@@ -109,10 +109,80 @@ If you don't need a specific value during an assignment you can ignore it using 
 The __if__ statement is similar to most languages, here are some differences:
 
 - No `()` are required around the condition
-- `{}` are always required adound the code to execute if the condition is true, even if it fits in one line
+- `{}` are always required around the code to execute if the condition is true, even if it fits in one line
 
 The __defer__ keyword instructs the function that follows to be called at the end of the function where it is deferred.
 
 Generally, in a __multi-value return__ the second argument or last argument is of type __error__ which is an interface that declares one method: `func Error() string`
 
 A value of a specific interface type can be compared only with another value of the same type or with `nil` which means: no value for that interface.
+
+### Milestone 2
+
+In this milestone you'll create your first image (a PNG); in doing so you'll learn about creating your own __package__ and __function__, invoke them and learn about __for__ loops, __types__, __zero values__ and the meaning of __exported__ and __unexported__.
+
+#### Steps for milestone 2
+
+1. Create a new folder named __myimage__; in Go, this is a new package
+2. Inside the myimage folder create a new file called __myimage.go__
+3. Write a function `func New(l, h int, c color.RGBA) *image.Paletted` inside __myimage.go__ that draws a rectangle of the specified size and color (use the `image` package, see functions `Rect`, `NewPaletted` and the `Set` method of the `Paletted` type)
+4. Change the main.go to first call the function that draws the rectangle then use `png.Encode` to save the rectangle image in a PNG file
+5. Run `go run main.go`
+
+As a bonus you can add more input flags for the properties of the rectangle (length, height and color) and the output file name.
+
+#### Notes for milestone 2
+
+A __package name__ and its containing folder do not have to have matching names, but it's good practice to do so.
+
+There are no specific keywords to define the scope of a Go symbol:
+
+- Name is UPPERCASE
+  - Symbol is __exported__, which means available to all packages (public-level scope)
+- Name is lowercase
+  - Symbol is __unexported__, which means available to the package where it is located (package-level scope)
+
+There three kind of __types__ in Go:
+
+1. Primitives
+2. Internal types
+3. Custom types
+
+Primitives in Go are __bool__ (true or false), the literal type __string__ and __numeric__ types __rune__, __byte__ (rune and byte can also represent literals), __uint__, uint8, uint16, uint32, uint64, __int__, int8, int16, int32, int64, float32, __float64__, complex64, __complex128__).
+
+Internal types are array, function, slice, map, and channel.
+
+Custom types are all Go types declared with the `type` and/or `struct` keywords.
+
+For example:
+
+```go
+type Age int
+
+type Person struct {
+  name string
+  age  Age
+}
+```
+
+Every variable is initialized in Go at the declaration time; if not explicitly initialized in the code, they will be initialized by Go with the __zero value__ for the type of that variable.
+
+Here is the zero value list:
+
+```go
+var (
+  b bool // false
+  i int // 0 (same for all numeric types)
+  s string // ""
+  p Person // Person{}, all custom types are initialized with all fields set to their zero values
+  v map[int]string // nil, also valid for all internal types
+)
+```
+
+Looping in Go is similar to most languages with some differences:
+
+- `for` is the only keyword used for loops
+- No `()` are required around the loop instructions
+- `{}` are always required around the code block to execute inside the loop, even if it fits in one line
+- __for condition {}__ replaces the _while_ statement; there are no _do/while_ statements in Go
+- __for true {}__ represents an infinite loop (to be interrupted with a `break` statement
