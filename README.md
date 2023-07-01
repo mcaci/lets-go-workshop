@@ -23,3 +23,42 @@ This workshop aims to give an introduction of the Go language by writing code an
 ## Milestones
 
 Here is the list of different milestones we are going to acheive during the workshop.
+
+### Hello, World! (milestone 0)
+
+For the first step you are going to write the hello world, and this is also going to be the occasion to setup your Go project.
+
+#### Steps
+
+1. Create a folder, e.g. lets-go-workshop; This will contain the code to write for the workshop
+2. Go inside the folder and run `go mod init` from the terminal
+3. (optional) run `git init` if you want to store the code for the different milestones in a different commit
+4. Open your IDE inside the workshop folder
+5. Create a `main.go` file
+6. Write the following code:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, World!")
+}
+```
+
+7. Run `go run main.go`
+
+#### Explanations
+
+The command `go mod init` initializes a project making it a Go __module__. A Go module represents a set of Go files that are supposed to be shipped altogether: e.g. an application or a library.
+
+Every Go application starts at a `main()` function located in a `main.go` file.
+
+Every Go file resides in a `package`, this information is declared as the first instruction of the file. The main function should reside in __package main__.
+
+Packages can contain functions, constants, custom types and so on inside a specific namespace; to use a specific package it needs to be imported with the `import` keyword. An unused import results in a compilation error.
+
+Any exported/public symbol inside a package can be invoked in the form of `package name.symbol name`. For example, in the call `fmt.Println`, __fmt__ is the package name and __Println__ is the symbol name.
+
+In Go `;` is not mandatory at the end of each statement.
