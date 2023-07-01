@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+	"os"
 )
 
 func main() {
-	fmt.Println("Hello, World!")
+	f, _ := os.Create("./out/text")
+	fmt.Fprintln(f, "Hello World!")
+	f.Close()
 }
