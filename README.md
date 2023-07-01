@@ -73,6 +73,7 @@ For this step you are going to improve on the hello world with some code that cr
 2. if there are any errors during the file creation, log them and exit (use the `log` package)
 3. Use the defer keyword to defer the execution of the Close() call
 4. Use the command line arguments to take the text to print (use the `flag` package)
+5. Run `go run main.go "Hello, World!"`
 
 #### Notes for milestone 1
 
