@@ -186,3 +186,12 @@ Looping in Go is similar to most languages with some differences:
 - `{}` are always required around the code block to execute inside the loop, even if it fits in one line
 - __for condition {}__ replaces the _while_ statement; there are no _do/while_ statements in Go
 - __for true {}__ represents an infinite loop (to be interrupted with a `break` statement
+
+Using flags in Go requires the usage of the `flag` package:
+
+- first define all flags using the functions `Int`, `String`, `Bool` and so on, according to the type of the data you request in input
+  - They all take __flag name__, __default value__ and __short description__ as inputs and return pointers of the same type as in the function name
+  - They can be visualized when running `go run main.go --help`, without needing to define a flag for the help message
+- then call the function `flag.Parse()` to parse all flags defined above
+
+__Pointers__ in Go are similar to C/C++. Use `*` declare or dereference them, use `&` to take the address of a value.
