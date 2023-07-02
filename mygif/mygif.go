@@ -9,7 +9,12 @@ import (
 	"github.com/mcaci/lets-go-workshop/myimage"
 )
 
-func New(text string, c1, c2 color.RGBA, fontPath string, fontSize float64) ([]*image.Paletted, error) {
+type GIF struct {
+	frames []*image.Paletted
+	delay  int
+}
+
+func New(text string, c1, c2 color.RGBA, fontPath string, fontSize float64) (GIF, error) {
 	const nFrames = 2
 	l, h := myimage.TextBounds(int(fontSize), len(text), 10)
 	var frames []*image.Paletted
@@ -24,20 +29,20 @@ func New(text string, c1, c2 color.RGBA, fontPath string, fontSize float64) ([]*
 		frame := myimage.New(l, h, bgColor)
 		err := myimage.Write(frame, text, fgColor, fontPath, fontSize)
 		if err != nil {
-			return nil, err
+			return GIF{}, err
 		}
 		frames = append(frames, frame)
 	}
-	return frames, nil
+	return GIF{frames: frames, delay: 100}, nil
 }
 
-func Save(w io.Writer, frames []*image.Paletted, delay int) error {
-	delays := make([]int, len(frames))
+func (g GIF) Save(w io.Writer) error {
+	delays := make([]int, len(g.frames))
 	for i := range delays {
-		delays[i] = delay
+		delays[i] = g.delay
 	}
 	return gif.EncodeAll(w, &gif.GIF{
-		Image: frames,
+		Image: g.frames,
 		Delay: delays,
 	})
 }
