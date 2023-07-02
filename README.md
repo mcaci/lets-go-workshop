@@ -127,7 +127,7 @@ In this milestone you'll create your first image (a PNG); in doing so you'll lea
 2. Inside the myimage folder create a new file called __myimage.go__
 3. Write a function `func New(l, h int, c color.RGBA) *image.Paletted` inside __myimage.go__ that draws a rectangle of the specified size and color (use the `image` package, see functions `Rect`, `NewPaletted` and the `Set` method of the `Paletted` type)
 4. Change the main.go to first call the function that draws the rectangle then use `png.Encode` to save the rectangle image in a PNG file
-5. Run `go run main.go`
+5. Run `go run main.go` with the appropriate parameter if you read them from the console
 
 As a bonus you can add more input flags for the properties of the rectangle (length, height and color) and the output file name.
 
@@ -206,8 +206,8 @@ In this milestone you'll write your first message on the previously created imag
 2. Import the package `github.com/golang/freetype` inside __myimage.go__
 3. In the terminal, at the root of the project run `go mod tidy`
 4. Write the code to create and configure the `freetype.Context` object
-5. Call the `Write` function inside the main function,
-6. Run `go run main.go`
+5. Call the `Write` function inside the main function
+6. Run `go run main.go` with the appropriate parameter if you read them from the console
 
 As a bonus you can:
 
@@ -224,3 +224,89 @@ The difference between packages from the __standard library__ and the __external
   - in local it will be the path to the package
 
 the function `Join` of the `strings` package is a useful tool to join several strings, organized into a slice (array), in a single string.
+
+### Milestone 4
+
+In this milestone you'll transform the previously created image into a blinking gif that alternates between two frames that switch their colors; by working on this milestone you'll learn to work with __slices__ (mostly known as resizable arrays), the __switch__ and __for range__ statements, the __make__ and __append__ keywords and to interact with __constants__ and __interfaces__.
+
+#### Steps for milestone 4
+
+1. Create a new folder in the project root named __mygif__
+2. Inside the __mygif__ folder create a new file called __mygif.go__
+3. Write a function `func New(text string, c1, c2 color.RGBA, fontPath string, fontSize float64) ([]*image.Paletted, error)` inside __mygif.go__ that creates a slice containing the frames to be stored in the gif and an error if something goes wrong (use the `myimage` package created in the previous milestones)
+4. Write another function `func Save(w io.Writer, frames []*image.Paletted, delay int) error` inside __mygif.go__ that stores the frames created in the New function into a gif file (use the `gif` package and don't forget to set the Delay field for the gif to store)
+5. Call the `New` and `Save` functions inside the main function
+6. Run `go run main.go` with the appropriate parameter if you read them from the console
+
+As a bonus you can:
+
+- derive the name of the output file from the input text
+- create a custom type `GIF` inside __mygif.go__ to hold the frames and the delay information and make the `New` function return `GIF` instead of `[]*image.Paletted`, transform the `Save` function into a __method__ of the GIF structure and adapt the calls in the main function to accomodate these changes
+
+#### Notes for milestone 4
+
+__Constants__ in Go are declared with the `const` keyword followed by `name = value`. The value can only be hardcoded in constants or be taken from other constants.
+
+__Slices__ and __arrays__ in Go can be associated with arrays from other programming languages. The main differences are:
+
+- Arrays have fixed length
+  - `var array [2]int // array of int with length 2`
+- Slice have variable length
+  - `var elems []int // slice of int with length 0`
+- Can initialize a slice (not an array) with the `make` built-in function
+  - `elems = make([]int, 2) // {0, 0}`
+- Can add elements to the slice with append built-in function
+  - `elems = append(elems, 4) // {0, 0, 4}`
+- Arrays and slices can sliced to take a subset of their content
+
+```go
+numbers := []int{0, 1, 2, 3}
+numbers[1:3] // {1,2}
+numbers[1:]  // {1,2,3}
+numbers[:2]  // {0,1}
+```
+
+The __switch__ statement is similar to most languages, here are some notable features:
+
+- No `()` are required around the condition or value to switch on
+- `{}` are always required around the code block to execute inside the switch
+- No `break` statement is necessary after each case as the execution will exit the switch statement after the selected `case` or `default` statement is completed
+- `Fallthrough` is the keyword to use before the case statement completes if you want to keep checking other cases
+- A plain switch, e.g. `switch {}` is generally used instead of an if/else block
+
+Continuing on the loops in Go, the __for range__ statement is used on symbols that can be looped upon, the syntax of the for range is the following:
+
+```go
+for i, e := range numbers {
+  fmt.Println(i, e)
+}
+```
+
+When looping on:
+
+- strings, `i` is the index and `e` is the character at position i
+- arrays and structs,  `i` is the index and `e` is the value (e.g. the value of number[i])
+- maps, `i` is the key of the map and `e` is the value corresponding to that key
+
+__Interfaces__ in Go are methods sets that are declared with the `type` and `interface` keywords.
+
+```go
+type Stringer interface {
+  String() string
+}
+```
+
+To implement an interface a (custom) type has just to implement the methods that are listed in its method set. There are no keywords like _implements_ or _extends_ like in other languages.
+
+```go
+type Person struct {
+  name string
+  age  int
+}
+
+func (p Person) String() string { // Person now implements the Stringer interface
+  return fmt.Sprintf("%s,%d", p.name, p.age)
+}
+```
+
+The `(p Person)` between the `func` keyword and the name of the function is called the __receiver__ type and it means that function becomes a method attacched to the type Person.

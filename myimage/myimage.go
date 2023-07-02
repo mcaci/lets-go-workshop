@@ -5,6 +5,8 @@ import (
 	"image/color"
 	"image/color/palette"
 	"image/draw"
+	"image/png"
+	"io"
 	"os"
 
 	"github.com/golang/freetype"
@@ -43,4 +45,8 @@ func Write(dst draw.Image, text string, c color.RGBA, fontPath string, fontSize 
 
 func TextBounds(fontSize, textLen, yOff int) (int, int) {
 	return fontSize * textLen / 2, fontSize + yOff
+}
+
+func Save(w io.Writer, img *image.Paletted) error {
+	return png.Encode(w, img)
 }
