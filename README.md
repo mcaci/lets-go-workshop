@@ -310,3 +310,69 @@ func (p Person) String() string { // Person now implements the Stringer interfac
 ```
 
 The `(p Person)` between the `func` keyword and the name of the function is called the __receiver__ type and it means that function becomes a method attacched to the type Person.
+
+### Milestone 5
+
+In this milestone you'll update the code to be able to accept a file with a list of sentences and create a gif with the same method for each sentence in the list. This milestone can be achieved with a sequential algorithm but your final objective is to do it using __concurrency__. In this way you'll get introduced to how Go manages concurrent code, learn about the `go` keyword to spawn __goroutines__, how to work with keyword `chan` to create __channels__ and pass data between goroutines using the arrow operator `<-`, the `close` keyword to close a channel from the __sender goroutine__, the usage if `sync.WaitGroup` to create wait points where to wait a group of goroutines to end and the way to use the __for range__ syntax to loop on channels.
+
+#### Steps for milestone 5
+
+1. Create a new file called __input__ and write some sentences in several lines
+2. Create a new function `func readInput(r io.Reader) chan string` inside __main.go__ that reads from the reader and returns a channel of strings with the content of the reader. To read from the reader look at the `bufio` package for the `Scanner` type. To fill the channel create a goroutine with the `go` keyword and fill the channel to return with the `<-` operator. When the channel is filled with all the values use the `close` keyword on the channel to signal that no more values are expected to be sent
+3. Inside the main function use `os.Open` to open the input file and pass it to the __readInput__ function just created
+4. Wrap the code previously written in a __goroutine__ `go func() {}()` and then inside a for range loop `for text := range readInput(r) {}` that reads all values coming from the channel returned by `readInput` inside the `text` variable and uses it in the Goroutine
+5. Use a `sync.WaitGroup` to make sure that the main goroutine waits that all other goroutines execute before closing the program
+6. Run `go run main.go` with the appropriate parameter if you read them from the console
+
+As a bonus you can:
+
+- accept the name of the file to read as an input flag
+- switch between the input file and the command line argument if no input file is provided (using a switch statement and leveraging the `io.Reader` interface to store the values coming from the file or from a `strings.NewReader`)
+
+#### Notes for milestone 5
+
+To start a function __concurrently__ with another you can prefix it with the `go` keyword. This keyword instructs the creation of a goroutine that runs that function. The function itself can be named like in a `go fmt.Println("hello concurrent world")` or anonymous like in a `go func() { fmt.Println("hello concurrent world") }()`. Notice that the final `()` denotes the fact that the function is actually called and not just being defined.
+
+In Go it is possible to pass data between goroutines using __channels__; they are a specific type defined with the `chan` keyword followed by the type that is passed in the channel. E.g. `var a chan int` is a channel that passes values of int type. To initialize a channel the `make` keyword should be used, make is a function that takes the channel as first input and the size of the channel as second one (if any).
+
+A channel of size 0 is called __unbuffered__ and it will always wait that the receiving end is ready before sending a value; a channel of size 1 or more is called __buffered__, with a buffer of the specified size, and it will be sending values until all the buffer is full and values are not read yet.
+
+Here is a code example of interacting with a channel:
+
+```go
+numbers := make(chan int)
+go func() {
+  numbers <- 1
+}
+fmt.Println(<-numbers) // will print 1 as soon as the goroutine puts 1 into the channel numbers
+```
+
+In this example you see the `<-` (arrow) operator being used twice:
+
+- on the right of the variable (`numbers <-`)
+  - in this direction the arrow operator is sending a value into the channel
+- on the left of the variable (`<-numbers`)
+  - in this direction the arrow operator is receiving a value from the channel
+
+Channels can also be read inside a __for range__ loop here is an example:
+
+```go
+numbers := make(chan int)
+go func() {
+  for i := 0; i < 10; i++ {
+    numbers <- i
+  }
+  close(numbers)
+}
+for n := range numbers {
+  fmt.Println(n) // will print 0 to 10 as soon as the goroutine puts their values into the channel numbers
+}
+```
+
+This is the only case where the __for range__ loop assigns one value because for slices, maps and strings it assigns two values. This kind of for range loop doesn't stop unless the __sender goroutine__ uses the `close` keyword to close the channel on the sender end. This function signals the receiving end of the channel (the for range loop) that it will not receive any more values and can exit. It will not exit without receiving the close call. It is not a call made to free a channel resource.
+
+The `sync.WaitGroup` is a specific custom type defined in the standard library to create wait points where to wait a group of goroutines to end. It defines three useful methods:
+
+- Add(int); to add a number of goroutines to wait in a counter
+- Done(): to signal the WaitGroup that one goroutine has completed. The counter decrements of 1
+- Wait(): which lets the main goroutine wait until the internal counter reaches 0
