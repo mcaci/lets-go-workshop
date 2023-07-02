@@ -195,3 +195,29 @@ Using flags in Go requires the usage of the `flag` package:
 - then call the function `flag.Parse()` to parse all flags defined above
 
 __Pointers__ in Go are similar to C/C++. Use `*` declare or dereference them, use `&` to take the address of a value.
+
+### Milestone 3
+
+In this milestone you'll write your first message on the previously created image; in doing so you'll learn interacting with __external packages__ from the standard library and see how to import them in your project.
+
+#### Steps for milestone 3
+
+1. Write a function `func Write(dst draw.Image, text string, c color.RGBA, fontPath string, fontSize float64) error` inside __myimage.go__ that draws a text on the rectangle created in milestone 2
+2. Import the package `github.com/golang/freetype` inside __myimage.go__
+3. In the terminal, at the root of the project run `go mod tidy`
+4. Write the code to create and configure the `freetype.Context` object
+5. Call the `Write` function inside the main function,
+6. Run `go run main.go`
+
+As a bonus you can keep adding input flags for the color of the string, the font file path and the font size.
+
+#### Notes for milestone 3
+
+The difference between packages from the __standard library__ and the __external__ ones can be seen from its naming when getting or importing them. In fact, the main difference is that external packages include a complete path to external package containing:
+
+- the registry: github, gitlab, bitbucket, and so on
+- the package author: be it a username or a project group name
+- the package name and path to subpackage if relevant
+  - in local it will be the path to the package
+
+the function `Join` of the `strings` package is a useful tool to join several strings, organized into a slice (array), in a single string.

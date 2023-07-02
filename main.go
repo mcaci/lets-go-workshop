@@ -6,6 +6,7 @@ import (
 	"image/png"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/mcaci/lets-go-workshop/myimage"
 )
@@ -25,6 +26,7 @@ func main() {
 	}
 	defer f.Close()
 	r := myimage.New(*l, *h, color.RGBA{R: uint8(*backR), G: uint8(*backG), B: uint8(*backB), A: 255})
+	myimage.Write(r, strings.Join(flag.Args(), " "), color.RGBA{A: 255}, "./resources/fonts/Ubuntu-R.ttf", 32)
 	err = png.Encode(f, r)
 	if err != nil {
 		log.Fatal(err)
