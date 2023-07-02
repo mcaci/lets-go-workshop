@@ -40,3 +40,7 @@ func Write(dst draw.Image, text string, c color.RGBA, fontPath string, fontSize 
 	_, err = ctx.DrawString(text, freetype.Pt(10, 30))
 	return err
 }
+
+func TextBounds(fontSize, textLen, yOff int) (int, int) {
+	return fontSize * textLen / 2, fontSize + yOff
+}

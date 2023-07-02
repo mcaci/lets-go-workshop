@@ -209,7 +209,10 @@ In this milestone you'll write your first message on the previously created imag
 5. Call the `Write` function inside the main function,
 6. Run `go run main.go`
 
-As a bonus you can keep adding input flags for the color of the string, the font file path and the font size.
+As a bonus you can:
+
+- keep adding input flags for the color of the string, the font file path and the font size.
+- create a function that gives the appropriate size for the rectangle by taking into account the font size and the length of the text to draw
 
 #### Notes for milestone 3
 
