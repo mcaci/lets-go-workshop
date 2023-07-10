@@ -4,6 +4,8 @@
 
 This workshop aims to give an introduction of the Go language by writing code and practising the language. Step by step more code will be introduced and the final product will be a tool that creates GIFs from an input text.
 
+Here is the link to the slides presented at Riviera DEV 2023: https://t.co/PQ2JqHHOya
+
 ## Tools needed for the workshop
 
 - Go
